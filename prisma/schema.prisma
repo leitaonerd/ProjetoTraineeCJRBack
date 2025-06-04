@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario{                           
+  id Int @id @default(autoincrement()) //@id indica que é a chave primaria da tabela, e o autoincrement aumenta o id toda vez que for instanciado
+  email String @unique //define a unicidade do email na criacao
+  senha String 
+  departamento String 
+  curso String 
+  fotoPerfil Bytes? // esse "?" seta a opcionalidade desse atributo
+  createdAt DateTime @default(now()) //@default seta algo na criacao, nesse caso pega o horario de agora no momento de criar um objeto
+  updatedAt DateTime @updatedAt //@updateAt da update na hora que foi mexido
+
+  //avaliacoes Avaliacao[] //Relacao de um usuario com varias avaliacoes
+//  comentarios Comentario[] //Relacao de um usuario com varios comentarios
+}
+
+model Avaliacao{
+  id Int @id @default(autoincrement())
+  conteudo String 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ // comentarios Comentario[] //uma avaliacao pode ter varios comentarios
+
+//  usuario Usuario @relation(fields: [usuarioID],references: [id],name: "usuarioAvaliador",onDelete: Cascade) // o atributo usuario vai receber todas as informacoes do objeto de usuario
+  usuarioID Int //o atributo usuarioID vai receber o ID(foreign key) do usuario relacionado a essa avaliacao, esse relacionamento foi feito no @relation ali em cima
+
+ // professor Professor @relation(fields: [professorID],references: [id],name: "professorAvaliado",onDelete: Cascade) //name: ... seta um nome para relacao para faciul indentificacao
+  professorID Int
+
+//  disciplina Disciplina @relation(fields: [disciplinaID],references: [id],name: "disciplinaAvaliada",onDelete: Cascade) //onDelete: quando voce deleta um registro na tabela original
+  disciplinaID Int                                                                                                      //o banco deleta automaticamente todos os registros na tabela filha
+}
