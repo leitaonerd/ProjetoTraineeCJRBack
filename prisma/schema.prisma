@@ -15,6 +15,7 @@ datasource db {
 
 model Usuario{                           
   id Int @id @default(autoincrement()) //@id indica que é a chave primaria da tabela, e o autoincrement aumenta o id toda vez que for instanciado
+  nome String
   email String @unique //define a unicidade do email na criacao
   senha String 
   departamento String 
