@@ -19,10 +19,8 @@ export class UsuarioDto {
     senha: string 
 
     @IsString()
-    @IsNotEmpty()
     departamento: string
 
     @IsString()
-    @IsNotEmpty()
     curso: string 
 }
