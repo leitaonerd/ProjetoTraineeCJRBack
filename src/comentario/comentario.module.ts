@@ -4,7 +4,8 @@ import { ComentarioController } from './comentario.controller';
 import { PrismaService } from 'src/database/prisma.service';
 
 @Module({
-  controllers: [ComentarioController],
-  providers: [ComentarioService, PrismaService],
+	providers: [ComentarioService, PrismaService],
+  	controllers: [ComentarioController],
 })
+
 export class ComentarioModule {}

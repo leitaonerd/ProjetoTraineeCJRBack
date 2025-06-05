@@ -19,6 +19,7 @@ export class ComentarioService {
         return this.prisma.comentario.create({ data });
     }
 
+    //melhorar depois
     async findAll(skip?: number, take?: number) {
         return this.prisma.comentario.findMany({
             skip,
