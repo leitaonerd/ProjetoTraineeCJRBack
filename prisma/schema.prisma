@@ -44,3 +44,12 @@ model Avaliacao{
 //  disciplina Disciplina @relation(fields: [disciplinaID],references: [id],name: "disciplinaAvaliada",onDelete: Cascade) //onDelete: quando voce deleta um registro na tabela original
   disciplinaID Int                                                                                                      //o banco deleta automaticamente todos os registros na tabela filha
 }
+
+model Comentario{
+  id Int @id @default(autoincrement())
+  usuarioID Int //o atributo usuarioID vai receber o ID(foreign key) do usuario relacionado a essa avaliacao, sem relation ainda
+  avaliacaoID Int //o atributo vai receber o ID da avaliação relacionada a esse comentario, sem relation ainda
+  conteudo String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt 
+}
