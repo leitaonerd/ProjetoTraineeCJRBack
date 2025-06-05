@@ -5,7 +5,7 @@ import { PrismaService } from "src/database/prisma.service";
 @Injectable()
 export class UsuarioService{
 
-    constructor (private prisma: PrismaService){}
+    constructor(private prisma: PrismaService){}
 
     //funcao para achar usuario pelo id
     private async findUserById(id: number) {
