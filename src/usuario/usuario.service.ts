@@ -1,6 +1,7 @@
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { UsuarioDto } from "./dto/Usuario.dto.js";
 import { PrismaService } from "src/database/prisma.service";
+import { UpdateUsuarioDto } from "./dto/UpdateUsuario.dto.js";
 
 @Injectable()
 export class UsuarioService{
@@ -38,14 +39,17 @@ export class UsuarioService{
       return this.findUserById(id)
     }
 
-    async update(id:number, data: UsuarioDto){
+    async update(id:number, data: UpdateUsuarioDto){
         const usuarioExistente = await this.findOneID(id)
         if(usuarioExistente){
-            const verificaEmail = await this.prisma.usuario.findUnique({where: {email : data.email}})
-            if(verificaEmail){
-                throw new ConflictException(`Usuário com ${data.email} ja cadastrado!`)
+            if(data.email){
+                const verificaEmail = await this.prisma.usuario.findUnique({where: {email : data.email}})
+            
+                if(verificaEmail && verificaEmail.id !== id){ //o usuario pode atualizar o email com o proprio email
+                    throw new ConflictException(`Usuário com ${data.email} ja cadastrado!`)
+                }
             }
-        }
+        }   
         return this.prisma.usuario.update({where : {id : Number(id)},data})
     }
 

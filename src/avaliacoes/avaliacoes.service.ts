@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import { AvaliacoesDto } from './dto/Avaliacoes.dto';
+import { UpdateAvaliacoesDto } from './dto/UpdateAvalicacoes.dto';
 
 @Injectable()
 export class AvaliacoesService {
@@ -19,7 +20,7 @@ export class AvaliacoesService {
         return await this.prisma.avaliacao.findUnique({where : {id: Number(id)}})
     }
 
-    async update(id:number,data:AvaliacoesDto){
+    async update(id:number,data:UpdateAvaliacoesDto){
         return await this.prisma.avaliacao.update({where : {id: Number(id)},data})
 
     }

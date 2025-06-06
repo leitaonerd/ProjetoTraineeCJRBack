@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { UsuarioDto } from "./dto/Usuario.dto";
 import { UsuarioService } from "./usuario.service";
+import { UpdateUsuarioDto } from "./dto/UpdateUsuario.dto";
 
 @Controller('usuario')
 
@@ -24,7 +25,7 @@ export class UsuarioController{
     }
 
     @Put(":id")
-    async update(@Param("id") id:number,@Body() data:UsuarioDto){
+    async update(@Param("id") id:number,@Body() data:UpdateUsuarioDto){
         return this.usuarioService.update(Number(id),data)
     }
 

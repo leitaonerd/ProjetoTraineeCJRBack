@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { AvaliacoesService } from './avaliacoes.service';
 import { AvaliacoesDto } from './dto/Avaliacoes.dto';
+import { UpdateAvaliacoesDto } from './dto/UpdateAvalicacoes.dto';
 
 @Controller('avaliacoes')
 
@@ -25,7 +26,7 @@ export class AvaliacoesController {
     }
 
     @Put(":id")
-    async update(@Param("id") id:number, @Body() data:AvaliacoesDto){
+    async update(@Param("id") id:number, @Body() data:UpdateAvaliacoesDto){
         return this.avaliacoesService.update(id,data)
     }
 
