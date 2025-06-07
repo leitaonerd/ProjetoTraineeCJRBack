@@ -35,7 +35,7 @@ export class ProfessorService {
     return this.prisma.professor.findMany();
   }
 
-  async findOne(id: Number) {
+  async findOneID(id: Number) {
     return this.findProfessorById(id);
   }
 
