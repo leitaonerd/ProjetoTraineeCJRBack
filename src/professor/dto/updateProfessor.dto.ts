@@ -1,16 +1,4 @@
-import { IsOptional, IsString, IsInt, Min } from 'class-validator';
+import { PartialType } from "@nestjs/mapped-types";
+import { ProfessorDto } from './professor.dto';
 
-export class UpdateProfessorDto {
-  @IsOptional()
-  @IsString()
-  nome?: string;
-
-  @IsOptional()
-  @IsString()
-  departamento?: string;
-
-  @IsOptional()
-  @IsInt()
-  @Min(1)
-  disciplinaId?: number;
-}
+export class UpdateProfessorDto extends PartialType(ProfessorDto){}
