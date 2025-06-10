@@ -52,3 +52,12 @@ model Comentario{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt 
 }
+
+model Professor{
+  id Int @id @default(autoincrement())
+  nome String
+  departamento String
+  disciplinaID Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
