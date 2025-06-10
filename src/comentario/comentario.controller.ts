@@ -15,6 +15,9 @@ export class ComentarioController {
   async findAll() {
     return this.comentarioService.findAll();
   }
+  async findOne() {
+    return this.comentarioService.findOne(Number(id)); //verificar
+  }
 
   @Put(':id')
   async update(@Param('id') id: number, @Body() data: ComentarioDto) {

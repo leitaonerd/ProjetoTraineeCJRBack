@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { ComentarioDto } from "./dto/Usuario.dto.js";
+import { ComentarioDto } from "./dto/comentario.dto.js";
 import { PrismaService } from "src/database/prisma.service";
 
 @Injectable()
@@ -9,7 +9,7 @@ export class ComentarioService {
 
     async create(data: ComentarioDto) {
         const userExists = await this.prisma.usuario.findUnique({
-            where: { id: data.usuarioId }
+            where: { id: data.usuarioID }
         });
         
         if (!userExists) {
