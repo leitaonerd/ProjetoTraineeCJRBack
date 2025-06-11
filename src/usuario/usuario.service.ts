@@ -2,6 +2,7 @@ import { ConflictException, Injectable, NotFoundException } from "@nestjs/common
 import { UsuarioDto } from "./dto/Usuario.dto.js";
 import { PrismaService } from "src/database/prisma.service";
 import * as bcrypt from "bcrypt";
+import { UpdateUsuarioDto } from "./dto/UpdateUsuario.dto.js";
 
 @Injectable()
 export class UsuarioService{
@@ -10,7 +11,15 @@ export class UsuarioService{
 
     //funcao para achar usuario pelo id
     private async findUserById(id: number) {
-        const usuario = await this.prisma.usuario.findUnique({ where: { id: Number(id) } });
+        const usuario = await this.prisma.usuario.findUnique({ where: { id: Number(id) },select : {
+            id : true,
+            nome: true,
+            email : true,
+            createdAt : true,
+            updatedAt : true
+          //  avaliacoes: true,
+          //  comentarios : true });
+        }})
 
         if (!usuario) {
             throw new NotFoundException(`Usuário com id ${id} não encontrado.`);
@@ -22,7 +31,7 @@ export class UsuarioService{
     // --------------------CRUD--------------------//
     
     //Create
-    async create(data: UsuarioDto){
+    async create(data: UsuarioDto){ 
         const usuario = await this.prisma.usuario.findUnique({where : {email : data.email}})
 
         if(usuario){
@@ -31,9 +40,18 @@ export class UsuarioService{
 
         const hashedPassword = await bcrypt.hash(data.senha,10)
 
-        return this.prisma.usuario.create({ data : { ...data,senha: hashedPassword} })
+        return this.prisma.usuario.create({ data : { ...data,senha: hashedPassword},select : {
+            id : true,
+            nome: true,
+            email : true,
+            createdAt : true,
+            updatedAt : true
+          //  avaliacoes: true,
+          //  comentarios : true
+        } })
     }
 
+    //ReadOne
     async findByEmail(email:string){
         const usuario = await this.prisma.usuario.findUnique({where : {email : email}})
 
@@ -50,11 +68,13 @@ export class UsuarioService{
             id : true,
             nome: true,
             email : true,
+            curso : true,
+            departamento : true,
             createdAt : true,
             updatedAt : true
           //  avaliacoes: true,
           //  comentarios : true
-        },})
+        }})
     }
 
     //ReadOne
@@ -63,25 +83,41 @@ export class UsuarioService{
     }
 
     //Update
-    async update(id:number, data: UsuarioDto){
-        const usuarioExistente = await this.findOneID(id)
-        
-        if(usuarioExistente){
-            if(data.email){
-                const verificaEmail = await this.prisma.usuario.findUnique({where: {email : data.email}})
-            
-                if(verificaEmail && verificaEmail.id !== id){ //o usuario pode atualizar o email com o proprio email
-                    throw new ConflictException(`Usuário com ${data.email} ja cadastrado!`)
-                }
+    async update(id:number, data: UpdateUsuarioDto){
+        if (data.email){
+            const verificaEmail = await this.prisma.usuario.findUnique({where: { email: data.email } });
+            if (verificaEmail && verificaEmail.id !== id) {
+                throw new ConflictException(`Usuário com ${data.email} já cadastrado!`);
             }
-        }   
-        return this.prisma.usuario.update({where : {id : Number(id)},data})
+        }
+
+        if(data.senha){
+            const hashedPassword = await bcrypt.hash(data.senha,10)
+            return this.prisma.usuario.update({where : {id : Number(id)}, data : {...data, senha : hashedPassword}, select : {
+            id : true,
+            nome: true,
+            email : true,
+            createdAt : true,
+            updatedAt : true
+          //  avaliacoes: true,
+          //  comentarios : true
+        }})}
+        return this.prisma.usuario.update({where : {id : Number(id)}, data: data,
+        select : {
+            id : true,
+            nome: true,
+            email : true,
+            createdAt : true,
+            updatedAt : true
+          //  avaliacoes: true,
+          //  comentarios : true
+        }})
     }
 
     //Delete
     async delete(id:number){
         await this.findUserById(id)
-        return this.prisma.usuario.delete({where : { id } })
+        return this.prisma.usuario.delete({where : { id }})
     }
 }
 

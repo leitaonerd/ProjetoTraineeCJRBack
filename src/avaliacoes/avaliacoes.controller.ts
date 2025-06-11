@@ -12,7 +12,7 @@ export class AvaliacoesController {
 
     @Post()
     async create(@Body() data:AvaliacoesDto){
-        return this.avaliacoesService.create(data)
+        return this.avaliacoesService.create(data)  
     }
 
     @Get()
