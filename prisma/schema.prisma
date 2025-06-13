@@ -61,3 +61,11 @@ model Professor{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Disciplina{
+  id Int @id @default(autoincrement())
+  nome String
+  professoresID Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
