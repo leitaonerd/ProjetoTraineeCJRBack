@@ -16,10 +16,9 @@ export class UsuarioService{
             nome: true,
             email : true,
             createdAt : true,
-            updatedAt : true
-          //  avaliacoes: true,
-          //  comentarios : true });
-        }})
+            updatedAt : true,
+            avaliacoes: true,
+            comentarios : true }});
 
         if (!usuario) {
             throw new NotFoundException(`Usuário com id ${id} não encontrado.`);
@@ -45,9 +44,9 @@ export class UsuarioService{
             nome: true,
             email : true,
             createdAt : true,
-            updatedAt : true
-          //  avaliacoes: true,
-          //  comentarios : true
+            updatedAt : true,
+            avaliacoes: true,
+            comentarios : true
         } })
     }
 
@@ -71,9 +70,9 @@ export class UsuarioService{
             curso : true,
             departamento : true,
             createdAt : true,
-            updatedAt : true
-          //  avaliacoes: true,
-          //  comentarios : true
+            updatedAt : true,
+            avaliacoes: true,
+            comentarios : true
         }})
     }
 
@@ -98,9 +97,9 @@ export class UsuarioService{
             nome: true,
             email : true,
             createdAt : true,
-            updatedAt : true
-          //  avaliacoes: true,
-          //  comentarios : true
+            updatedAt : true,
+            avaliacoes: true,
+            comentarios : true
         }})}
         return this.prisma.usuario.update({where : {id : Number(id)}, data: data,
         select : {
@@ -108,9 +107,9 @@ export class UsuarioService{
             nome: true,
             email : true,
             createdAt : true,
-            updatedAt : true
-          //  avaliacoes: true,
-          //  comentarios : true
+            updatedAt : true,
+            avaliacoes: true,
+            comentarios : true
         }})
     }
 

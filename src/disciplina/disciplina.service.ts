@@ -12,8 +12,8 @@ export class DisciplinaService {
   constructor(private prisma: PrismaService) {}
 
   async create(data: DisciplinaDto) {
-    const disciplina = await this.prisma.disciplina.findUnique({
-      where: { nome: data.nome },
+    const disciplina = await this.prisma.disciplina.findFirst({
+      where : { nome: data.nome },
     });
 
     if (disciplina) {
@@ -42,7 +42,7 @@ export class DisciplinaService {
   async update(id: number, data: UpdateDisciplinaDto) {
     await this.findOne(id);
     if (data.nome) {
-      const verificaNome = await this.prisma.disciplina.findUnique({
+      const verificaNome = await this.prisma.disciplina.findFirst({
         where: { nome: data.nome },
       });
       if (verificaNome) {
