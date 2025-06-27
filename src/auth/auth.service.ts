@@ -19,7 +19,7 @@ export class AuthService {
 
     const payload : UserPayload = { email: usuario.email, sub : usuario.id}
     const jwtToken = await this.jwtService.signAsync(payload,{expiresIn : '1d', secret : this.configService.get("JWT_SECRET")})
-    return { acess_token : jwtToken}
+    return { access_token : jwtToken}
   } 
 
   async validateUser(email : string, senha : string){ //valida o email e depois se a senha provida é compativel com a desse email
