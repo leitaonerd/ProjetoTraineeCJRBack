@@ -1,16 +1,24 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, UploadedFile, UseInterceptors} from "@nestjs/common";
 import { UsuarioDto } from "./dto/Usuario.dto";
 import { UsuarioService } from "./usuario.service";
 import { Public } from "src/auth/decorators/isPublic.decorator";
 import { UpdateUsuarioDto } from "./dto/UpdateUsuario.dto";
+import { FileInterceptor } from "@nestjs/platform-express/multer";
+import type { Multer } from "multer";
 
 @Controller('usuario')
 export class UsuarioController {
   constructor(private readonly usuarioService: UsuarioService) {}
 
   @Public()
+  @UseInterceptors(FileInterceptor('fotoPerfil'))
   @Post()
-  async create(@Body() data: UsuarioDto) {
+  async create(@Body() data: UsuarioDto, @UploadedFile() file?: Multer.File) {
+     if (file) {
+      data.fotoPerfil = file.buffer;
+    } else {
+      data.fotoPerfil = undefined; 
+    }
     return this.usuarioService.create(data);
   }
 
@@ -20,6 +28,7 @@ export class UsuarioController {
     return this.usuarioService.findAll();
   }
 
+  @Public()
   @Get(':id')
   async findOneByID(@Param('id') id: number) {
     return this.usuarioService.findOneID(id);

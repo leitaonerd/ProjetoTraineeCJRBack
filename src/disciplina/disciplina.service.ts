@@ -20,7 +20,7 @@ export class DisciplinaService {
       throw new ConflictException(`Disciplina ${data.nome} ja cadastrado!`);
     }
 
-    return this.prisma.disciplina.create({ data });
+    return this.prisma.disciplina.create({ data : { nome : data.nome} });
   }
 
   async findAll() {
@@ -51,7 +51,7 @@ export class DisciplinaService {
     }
     return this.prisma.disciplina.update({
       where: { id },
-      data,
+      data : {nome: data.nome,},
     });
   }
 

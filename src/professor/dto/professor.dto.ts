@@ -10,6 +10,5 @@ export class ProfessorDto {
   departamento: string;
 
   @IsInt()
-  @IsNotEmpty()
   disciplinaID: number;
 }

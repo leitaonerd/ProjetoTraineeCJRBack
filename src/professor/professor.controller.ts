@@ -10,16 +10,19 @@ import {
 import { ProfessorService } from './professor.service';
 import { ProfessorDto } from './dto/professor.dto';
 import { UpdateProfessorDto } from './dto/updateProfessor.dto';
+import { Public } from 'src/auth/decorators/isPublic.decorator';
 
 @Controller('professores')
 export class ProfessorController {
   constructor(private readonly professorService: ProfessorService) {}
 
+  @Public()
   @Post()
   async create(@Body() data: ProfessorDto) {
     return this.professorService.create(data);
   }
 
+  @Public()
   @Get()
   async findAll() {
     return this.professorService.findAll();

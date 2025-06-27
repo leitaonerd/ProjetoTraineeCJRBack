@@ -26,7 +26,11 @@ export class ProfessorService {
       throw new NotFoundException(`Professor ${data.nome} ja existe!`);
     }
 
-    return this.prisma.professor.create({ data });
+    return this.prisma.professor.create({ data :{
+      nome: data.nome,
+      departamento : data.departamento,
+      disciplinaID: data.disciplinaID,
+    } });
   }
 
   async findAll() {
@@ -41,16 +45,9 @@ export class ProfessorService {
     // Verifica se professor existe
     const professor = await this.findProfessorById(id);
 
-    // Verifica se disciplinaId existe, caso tenha sido preenchido
-   // const disciplinaId = await this.prisma.disciplina.findUnique({
-   //   where: { id: data.disciplinaId },
-   // });
-
-  //  if (!disciplinaId) {
-   //   throw new NotFoundException(
-    //    `Disciplina com id ${data.disciplinaId} não encontrada.`,
-     // );
-   // }
+    if(!professor){
+      throw new NotFoundException(`Professor com id ${id} não encontrado.`);
+    }
 
     return this.prisma.professor.update({
       where: { id : Number(id) },

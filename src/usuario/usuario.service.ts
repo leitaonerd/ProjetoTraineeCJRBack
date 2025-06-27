@@ -39,14 +39,14 @@ export class UsuarioService{
 
         const hashedPassword = await bcrypt.hash(data.senha,10)
 
-        return this.prisma.usuario.create({ data : { ...data,senha: hashedPassword},select : {
+        return this.prisma.usuario.create({ data : { ...data,senha: hashedPassword, fotoPerfil: data.fotoPerfil || undefined,},select : {
             id : true,
             nome: true,
             email : true,
             createdAt : true,
             updatedAt : true,
             avaliacoes: true,
-            comentarios : true
+            comentarios : true,
         } })
     }
 

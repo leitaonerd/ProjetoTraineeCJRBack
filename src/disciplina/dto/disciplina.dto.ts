@@ -7,5 +7,5 @@ export class DisciplinaDto {
 
   @IsInt()
   @IsNotEmpty()
-  professoresID: number;
+  professores: number[];
 }
