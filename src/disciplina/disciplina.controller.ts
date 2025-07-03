@@ -11,16 +11,19 @@ import {
 import { DisciplinaService } from './disciplina.service';
 import { DisciplinaDto } from './dto/disciplina.dto';
 import { UpdateDisciplinaDto } from './dto/updateDisciplina.dto';
+import { Public } from 'src/auth/decorators/isPublic.decorator';
 
 @Controller('disciplina')
 export class DisciplinaController {
   constructor(private readonly disciplinaService: DisciplinaService) {}
 
+  @Public()
   @Post()
   async create(@Body() data: DisciplinaDto) {
     return this.disciplinaService.create(data);
   }
 
+  @Public()
   @Get()
   async findAll() {
     return this.disciplinaService.findAll();

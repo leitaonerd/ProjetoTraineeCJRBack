@@ -13,13 +13,8 @@ export class UsuarioController {
   @Public()
   @UseInterceptors(FileInterceptor('fotoPerfil'))
   @Post()
-  async create(@Body() data: UsuarioDto, @UploadedFile() file?: Multer.File) {
-     if (file) {
-      data.fotoPerfil = file.buffer;
-    } else {
-      data.fotoPerfil = undefined; 
-    }
-    return this.usuarioService.create(data);
+  async create(@Body() data: UsuarioDto, @UploadedFile() file?: Express.Multer.File) {
+    return this.usuarioService.create(data,file);
   }
 
   @Public()
@@ -35,8 +30,9 @@ export class UsuarioController {
   }
 
   @Put(":id")
-    async update(@Param("id") id:number,@Body() data:UpdateUsuarioDto){
-        return this.usuarioService.update(Number(id),data)
+  @UseInterceptors(FileInterceptor('fotoPerfil')) 
+  async update(@Param("id") id:number,@Body() data:UpdateUsuarioDto, @UploadedFile() file: Express.Multer.File,){
+      return this.usuarioService.update(Number(id),data,file)
   }
 
   @Delete(':id')

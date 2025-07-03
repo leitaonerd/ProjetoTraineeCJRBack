@@ -26,5 +26,5 @@ export class UsuarioDto {
     curso: string 
 
   @IsOptional() 
-  fotoPerfil?: Buffer
+  fotoPerfil?: string
 }

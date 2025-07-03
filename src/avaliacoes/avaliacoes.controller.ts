@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
 import { AvaliacoesService } from './avaliacoes.service';
 import { AvaliacoesDto } from './dto/Avaliacoes.dto';
 import { UpdateAvaliacoesDto } from './dto/UpdateAvalicacoes.dto';
+import { Public } from 'src/auth/decorators/isPublic.decorator';
 
 @Controller('avaliacoes')
 
@@ -9,12 +10,13 @@ export class AvaliacoesController {
 
     constructor(private readonly avaliacoesService : AvaliacoesService){}
 
-
+    @Public()
     @Post()
     async create(@Body() data:AvaliacoesDto){
         return this.avaliacoesService.create(data)  
     }
 
+    @Public()
     @Get()
     async findAll(){
         return this.avaliacoesService.findAll()

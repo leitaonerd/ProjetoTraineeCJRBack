@@ -3,6 +3,8 @@ import { UsuarioDto } from "./dto/Usuario.dto.js";
 import { PrismaService } from "src/database/prisma.service";
 import * as bcrypt from "bcrypt";
 import { UpdateUsuarioDto } from "./dto/UpdateUsuario.dto.js";
+import { join } from "path";
+import { writeFile } from "fs/promises";
 
 @Injectable()
 export class UsuarioService{
@@ -15,10 +17,13 @@ export class UsuarioService{
             id : true,
             nome: true,
             email : true,
+            curso : true,
+            departamento : true,
             createdAt : true,
             updatedAt : true,
             avaliacoes: true,
-            comentarios : true }});
+            comentarios : true,
+            fotoPerfil : true }});
 
         if (!usuario) {
             throw new NotFoundException(`Usuário com id ${id} não encontrado.`);
@@ -30,7 +35,7 @@ export class UsuarioService{
     // --------------------CRUD--------------------//
     
     //Create
-    async create(data: UsuarioDto){ 
+    async create(data: UsuarioDto, file?: Express.Multer.File){ 
         const usuario = await this.prisma.usuario.findUnique({where : {email : data.email}})
 
         if(usuario){
@@ -39,7 +44,23 @@ export class UsuarioService{
 
         const hashedPassword = await bcrypt.hash(data.senha,10)
 
-        return this.prisma.usuario.create({ data : { ...data,senha: hashedPassword, fotoPerfil: data.fotoPerfil || undefined,},select : {
+         
+        let fotoUrl: string | undefined = undefined;
+
+        if (file) {
+        // Cria um nome de arquivo único para evitar sobreposições
+        const fileName = `${Date.now()}-${file.originalname}`;
+        // Define o caminho físico onde o arquivo será salvo
+        const filePath = join(__dirname, '..', '..', 'uploads', fileName);
+
+        // Escreve o buffer do arquivo no caminho definido
+        await writeFile(filePath, file.buffer);
+
+        // Define a URL que será salva no banco de dados
+        fotoUrl = `/uploads/${fileName}`;
+        }
+
+        return this.prisma.usuario.create({ data : { ...data,senha: hashedPassword, fotoPerfil: fotoUrl,},select : {
             id : true,
             nome: true,
             email : true,
@@ -47,6 +68,9 @@ export class UsuarioService{
             updatedAt : true,
             avaliacoes: true,
             comentarios : true,
+            curso : true,
+            departamento : true,
+            fotoPerfil : true
         } })
     }
 
@@ -72,7 +96,8 @@ export class UsuarioService{
             createdAt : true,
             updatedAt : true,
             avaliacoes: true,
-            comentarios : true
+            comentarios : true,
+            fotoPerfil : true
         }})
     }
 
@@ -82,7 +107,7 @@ export class UsuarioService{
     }
 
     //Update
-    async update(id:number, data: UpdateUsuarioDto){
+    async update(id:number, data: UpdateUsuarioDto,  file?: Express.Multer.File){
         if (data.email){
             const verificaEmail = await this.prisma.usuario.findUnique({where: { email: data.email } });
             if (verificaEmail && verificaEmail.id !== id) {
@@ -90,27 +115,34 @@ export class UsuarioService{
             }
         }
 
+        const dataToUpdate: any = { ...data };
+
+        if (file) {
+            const fileName = `${Date.now()}-${file.originalname}`;
+            const filePath = join(process.cwd(), 'uploads', fileName);
+            await writeFile(filePath, file.buffer);
+            dataToUpdate.fotoPerfil = `/uploads/${fileName}`;
+        }
+        
         if(data.senha){
-            const hashedPassword = await bcrypt.hash(data.senha,10)
-            return this.prisma.usuario.update({where : {id : Number(id)}, data : {...data, senha : hashedPassword}, select : {
+            dataToUpdate.senha = await bcrypt.hash(data.senha, 10);
+        }
+
+        return this.prisma.usuario.update({
+            where: { id: Number(id) },
+            data: dataToUpdate,
+            select: {  
             id : true,
             nome: true,
             email : true,
+            curso : true,
+            departamento : true,
             createdAt : true,
             updatedAt : true,
             avaliacoes: true,
-            comentarios : true
-        }})}
-        return this.prisma.usuario.update({where : {id : Number(id)}, data: data,
-        select : {
-            id : true,
-            nome: true,
-            email : true,
-            createdAt : true,
-            updatedAt : true,
-            avaliacoes: true,
-            comentarios : true
-        }})
+            comentarios : true,
+            fotoPerfil : true}
+        });
     }
 
     //Delete

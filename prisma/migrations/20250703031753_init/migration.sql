@@ -6,7 +6,7 @@ CREATE TABLE "Usuario" (
     "senha" TEXT NOT NULL,
     "departamento" TEXT NOT NULL,
     "curso" TEXT NOT NULL,
-    "fotoPerfil" BLOB,
+    "fotoPerfil" TEXT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL
 );
