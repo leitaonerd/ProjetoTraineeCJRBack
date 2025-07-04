@@ -22,6 +22,7 @@ export class AvaliacoesController {
         return this.avaliacoesService.findAll()
     }
 
+    @Public()
     @Get(":id")
     async findOne(@Param("id") id:number){
         return this.avaliacoesService.findOne(id)

@@ -21,7 +21,7 @@ export class UsuarioService{
             departamento : true,
             createdAt : true,
             updatedAt : true,
-            avaliacoes: true,
+            avaliacoes: {select: {id : true,conteudo : true,createdAt: true,updatedAt : true,usuarioID : true,professorID : true,disciplinaID : true,comentarios: true}},
             comentarios : true,
             fotoPerfil : true }});
 
@@ -66,7 +66,7 @@ export class UsuarioService{
             email : true,
             createdAt : true,
             updatedAt : true,
-            avaliacoes: true,
+            avaliacoes: {select: {id : true,conteudo : true,createdAt: true,updatedAt : true,usuarioID : true,professorID : true,disciplinaID : true,comentarios: true}},
             comentarios : true,
             curso : true,
             departamento : true,
@@ -95,7 +95,7 @@ export class UsuarioService{
             departamento : true,
             createdAt : true,
             updatedAt : true,
-            avaliacoes: true,
+            avaliacoes: {select: {id : true,conteudo : true,createdAt: true,updatedAt : true,usuarioID : true,professorID : true,disciplinaID : true,comentarios: true}},
             comentarios : true,
             fotoPerfil : true
         }})
@@ -138,7 +138,7 @@ export class UsuarioService{
             curso : true,
             departamento : true,
             createdAt : true,
-            updatedAt : true,
+            updatedAt : true,   
             avaliacoes: true,
             comentarios : true,
             fotoPerfil : true}
