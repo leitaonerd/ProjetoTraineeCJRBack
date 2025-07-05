@@ -11,6 +11,8 @@ import { ProfessorService } from './professor.service';
 import { ProfessorDto } from './dto/professor.dto';
 import { UpdateProfessorDto } from './dto/updateProfessor.dto';
 import { Public } from 'src/auth/decorators/isPublic.decorator';
+import { FileInterceptor } from '@nestjs/platform-express/multer';
+import type { Multer } from 'multer';
 
 @Controller('professores')
 export class ProfessorController {
@@ -28,6 +30,7 @@ export class ProfessorController {
     return this.professorService.findAll();
   }
 
+  @Public()
   @Get(':id')
   async findOneByID(@Param('id') id: number) {
     return this.professorService.findOneID(+id);
