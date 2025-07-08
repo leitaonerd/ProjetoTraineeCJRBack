@@ -27,11 +27,7 @@ export class ProfessorService {
             professorID: true,
             disciplinaID: true,
             comentarios: true,
-            usuario: {
-              select: {
-                nome: true,
-              },
-            },
+            usuario: true,
           },
         },
         disciplina: {
