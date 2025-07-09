@@ -15,12 +15,12 @@ export class AvaliacoesService {
 
     async findAll(){
         return await this.prisma.avaliacao.findMany({select : {id : true, conteudo : true, createdAt : true, updatedAt : true, usuarioID : true, professorID: true, disciplinaID: true, usuario : true,
-            comentarios : {select : {usuario : true, createdAt : true, updatedAt: true, conteudo : true,}}}})
+            comentarios : {select : {id: true, usuario : true, createdAt : true, updatedAt: true, conteudo : true,}}}})
     }
 
     async findOne(id:number){
         return await this.prisma.avaliacao.findUnique({where : {id: Number(id)}, select : {id : true, conteudo : true, createdAt : true, updatedAt : true, usuarioID : true, professor: true, disciplinaID: true, usuario : true,
-            comentarios : {select : {usuario : true, createdAt : true, updatedAt: true, conteudo : true,}}}})
+            comentarios : {select : {id: true, usuario : true, createdAt : true, updatedAt: true, conteudo : true,}}}})
     }
 
     async update(id:number,data:UpdateAvaliacoesDto){
