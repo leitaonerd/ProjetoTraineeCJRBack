@@ -10,7 +10,6 @@ export class AvaliacoesController {
 
     constructor(private readonly avaliacoesService : AvaliacoesService){}
 
-    @Public()
     @Post()
     async create(@Body() data:AvaliacoesDto){
         return this.avaliacoesService.create(data)  

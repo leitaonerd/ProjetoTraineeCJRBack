@@ -7,7 +7,6 @@ import { Public } from 'src/auth/decorators/isPublic.decorator';
 export class ComentarioController {
     constructor(private readonly comentarioService: ComentarioService) {}
 
-  @Public()
   @Post()
   async create(@Body() data: ComentarioDto) {
     return this.comentarioService.create(data);
