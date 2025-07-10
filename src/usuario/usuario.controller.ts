@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  UnauthorizedException,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -15,6 +16,8 @@ import { Public } from 'src/auth/decorators/isPublic.decorator';
 import { UpdateUsuarioDto } from './dto/UpdateUsuario.dto';
 import { FileInterceptor } from '@nestjs/platform-express/multer';
 import type { Multer } from 'multer';
+import { CurrentUser } from 'src/auth/decorators/CurrentUser';
+import { UserPayload } from 'src/auth/types/UserPayload';
 
 @Controller('usuario')
 export class UsuarioController {
@@ -48,12 +51,23 @@ export class UsuarioController {
     @Param('id') id: number,
     @Body() data: UpdateUsuarioDto,
     @UploadedFile() file: Express.Multer.File,
+    @CurrentUser() CurrentUser : UserPayload
   ) {
+    if (Number(id) !== CurrentUser.sub) {
+      throw new UnauthorizedException(
+        'Usuário não pode ser atualizado por outro usuário',
+      );
+    }
     return this.usuarioService.update(Number(id), data, file);
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: number) {
+  async delete(@Param('id') id: number , @CurrentUser() CurrentUser : UserPayload) {
+    if (Number(id) !== CurrentUser.sub) {
+      throw new UnauthorizedException(
+        'Usuário não pode ser deletado por outro usuário'
+      );
+    }
     return this.usuarioService.delete(Number(id));
   }
 }
